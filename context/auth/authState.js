@@ -107,6 +107,15 @@ const AuthState = ({children}) => {
             type: CERRAR_SESION
         })
     }
+    // //detectar la ventana
+    // const obtenerUltimoEnlace = ()=>{
+    //     window.history.pushState({ prevUrl: window.location.href }, null, "/login")
+    //     const enlace = (window.history.state.prevUrl.toString().substring(21, 22))
+    //     dispatch({
+    //         type: OBTENER_ENLACE,
+    //         payload: enlace
+    //     })
+    // } creí que serviría el código de la pasión
 
     return (
         <authContext.Provider

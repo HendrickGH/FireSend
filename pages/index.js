@@ -11,7 +11,7 @@ const Index = () => {
   
   // Extraer el Usuario autenticado del Storage 
   const AuthContext = useContext( authContext );
-  const { usuarioAutenticado } = AuthContext;
+  
 
   // Extraer el mensaje de error de archivos
   const AppContext = useContext( appContext );
@@ -21,6 +21,7 @@ const Index = () => {
     const token = localStorage.getItem('token');
 
     if(token) {
+      const { usuarioAutenticado } = AuthContext;
       usuarioAutenticado()
     }
    

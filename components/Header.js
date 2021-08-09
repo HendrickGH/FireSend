@@ -3,7 +3,7 @@ import Link from 'next/link';
 import authContext from '../context/auth/authContext';
 import appContext from '../context/app/appContext';
 import { useRouter } from 'next/router';
-import Image from 'next/image'
+import Image from 'next/image';
 
 const Header = () => {
 
@@ -12,13 +12,15 @@ const Header = () => {
 
       // Extraer el Usuario autenticado del Storage 
     const AuthContext = useContext( authContext );
-    const { usuario, usuarioAutenticado,  cerrarSesion } = AuthContext;
+    const { usuario,  cerrarSesion} = AuthContext;
 
       // Context de la aplicación
     const AppContext = useContext( appContext );
     const { limpiarState } = AppContext;
 
+    
     useEffect(() => {
+        const {usuarioAutenticado} = AuthContext
         usuarioAutenticado()
     }, []);
 
@@ -27,7 +29,6 @@ const Header = () => {
         limpiarState();
     }
 
-
     return ( 
         <header className="py-8 flex flex-col md:flex-row items-center justify-between">
             <Image 
@@ -35,6 +36,7 @@ const Header = () => {
                 className="w-64 mb-8 md:mb-0 cursor-pointer" src="/fire.svg"
                 width="250px"
                 height="100px" 
+                alt= "Logotipo"
             />
      
 

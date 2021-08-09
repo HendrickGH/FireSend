@@ -9,7 +9,7 @@ const Dropzone = () => {
 
     // Context de la app
     const AppContext = useContext(appContext);
-    const { cargando, mostrarAlerta, subirArchivo, crearEnlace } = AppContext;
+    const { cargando, mostrarAlerta, crearEnlace } = AppContext;
 
     // Context de autenticación
     const AuthContext = useContext(authContext);
@@ -21,6 +21,7 @@ const Dropzone = () => {
 
     const onDropAccepted = useCallback( async (acceptedFiles) => {
         // Crear un form Data
+        const { subirArchivo } = AppContext
         const formData = new FormData();
         formData.append('archivo', acceptedFiles[0]);
 
