@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 const CrearCuenta = () => {
   
   const AuthContext = useContext(authContext);
-  const { mensaje, registrarUsuario, autenticado } = AuthContext;
+  const { mensaje, registrarUsuario, autenticado, iniciarSesion } = AuthContext;
   const AppContext = useContext(appContext)
   const router = useRouter();
 
@@ -35,7 +35,7 @@ const CrearCuenta = () => {
     },
     validationSchema: Yup.object({
       nombre: Yup.string()
-        .min(2, 'Por favor, ingresa tu primer nombre completo')
+        .min(3, 'Por favor, ingresa tu primer nombre completo')
         .max(15, 'Por favor, ingresa solo tu primer nombre')
         .required('El Nombre es Obligatorio'),
       email: Yup.string()
@@ -45,8 +45,11 @@ const CrearCuenta = () => {
         .required('El password no puede ir vacio')
         .min(6, 'El password debe contener al menos 6 caracteres')
     }),
-    onSubmit: valores => {
-      registrarUsuario(valores)
+    onSubmit: ({nombre,email,password}) => {
+      registrarUsuario(nombre, email, password),
+      setTimeout(() => {
+        iniciarSesion(email, password)
+      }, 3000);
     }
   });
 

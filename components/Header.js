@@ -8,11 +8,11 @@ import Image from 'next/image';
 const Header = () => {
 
     // routing 
-    const router = useRouter();
+    // const router = useRouter(); no es necesaria puesto que ha sido reemplazada por location.href=('/') debido a que cuando subiamos un archivo y dabamos en el logo el state se limpiaba, pero no el dom, por tanto para evitar entrar con el dom a hacer movimientos simplemente limpiamos el state y recargamos, habrá una pequeña perdida en performance pero será la manera más simple
 
       // Extraer el Usuario autenticado del Storage 
     const AuthContext = useContext( authContext );
-    const { usuario,  cerrarSesion} = AuthContext;
+    const { usuario,  cerrarSesion, autenticado } = AuthContext;
 
       // Context de la aplicación
     const AppContext = useContext( appContext );
@@ -20,22 +20,28 @@ const Header = () => {
 
     
     useEffect(() => {
-        const {usuarioAutenticado} = AuthContext
-        usuarioAutenticado()
-    }, []);
+        if (!localStorage.getItem('token')) {
+            const {cerrarSesion } = AuthContext
+            const { limpiarState} = AppContext
+            cerrarSesion()
+            limpiarState()
+        }else{
+            const {usuarioAutenticado} = AuthContext
+            usuarioAutenticado()
+        }
+    }, [autenticado]);
 
     const redireccionar = () => {
-        router.push('/');
-        limpiarState();
+        location.href=('/')
     }
 
     return ( 
         <header className="py-8 flex flex-col md:flex-row items-center justify-between">
             <Image 
                 onClick={() => redireccionar() }
-                className="w-64 mb-8 md:mb-0 cursor-pointer" src="/fire.svg"
-                width="250px"
-                height="100px" 
+                className="w-64 mb-8 md:mb-0 cursor-pointer self-center" src="/fire.svg"
+                width="220px"
+                height="70px" 
                 alt= "Logotipo"
             />
      
@@ -49,7 +55,7 @@ const Header = () => {
                             <button 
                                 type="button"
                                 className="bg-black px-5 py-3 rounded-lg text-white font-bold uppercase"
-                                onClick={() => cerrarSesion() }
+                                onClick={() =>{ cerrarSesion(), redireccionar()} }
                             >Cerrar Sesión</button>
                         </div>
                     ) : (

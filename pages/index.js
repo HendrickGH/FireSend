@@ -5,7 +5,7 @@ import Dropzone from '../components/Dropzone';
 import authContext from '../context/auth/authContext';
 import appContext from '../context/app/appContext';
 import Link from 'next/link';
-
+import Countdown from 'react-countdown';
 
 const Index = () => {
   
@@ -15,7 +15,7 @@ const Index = () => {
 
   // Extraer el mensaje de error de archivos
   const AppContext = useContext( appContext );
-  const { mensaje_archivo, url } = AppContext;
+  const { mensaje_archivo, url, limpiarState } = AppContext;
   
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -31,16 +31,25 @@ const Index = () => {
     <Layout>
         <div className="md:w-4/5 xl:w-3/5 mx-auto mb-32">
           { url ? (
-            <>
-              <p className="text-center text-2xl mt-10">
-                  <span className="font-bold text-red-700 text-3xl uppercase">Tu URL es:</span> {`${process.env.frontendURL}/enlaces/${url}`} 
+            <div>
+              <p className="text-justify text-2xl">
+                <span className="font-bold text-red-600 text-3xl uppercase block text-center">¡Atención! </span>Tienes 
+                <Countdown
+                  date={Date.now() + 30000}
+                  renderer={({total}) => <span className="font-bold text-red-500">{` ${total/1000} `}</span>}
+                  onComplete={ ()=> limpiarState()}
+                  />         
+               segundos para compartir tu enlace, recuerda que tus datos permaneceran cifrados de <span className="font-bold text-red-400">extremo a extremo</span> durante un máximo periodo de 3 horas, pasado este tiempo se borrará de internet por tanto<span className="font-bold text-red-500 uppercase text-center block"> ¡nadie podrá descargarlo!</span>
+              </p>
+              <p className="text-center text-xl mt-10">
+                <span className="font-bold text-red-700 text-2xl uppercase">Tu URL es:</span> {`${process.env.frontendURL}/enlaces/${url}`} 
               </p>
               <button 
                   type="button"
                   className="bg-red-500 hover:bg-gray-900 w-full p-2 text-white uppercase font-bold mt-10"
                   onClick={() => navigator.clipboard.writeText(`${process.env.frontendURL}/enlaces/${url}`) }
               >Copiar Enlace</button>
-            </>
+            </div>
           ) : (
             <>
             { mensaje_archivo && <Alerta /> }

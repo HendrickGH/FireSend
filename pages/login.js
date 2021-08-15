@@ -44,8 +44,8 @@ const Login = () => {
       password: Yup.string()
         .required('El password no puede ir vacio')
     }),
-    onSubmit: valores => {
-      iniciarSesion(valores)
+    onSubmit: ({email, password}) => {
+      iniciarSesion(email, password)
     }
   });
 

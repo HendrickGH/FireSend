@@ -31,8 +31,10 @@ const AuthState = ({children}) => {
     const [ state, dispatch ] = useReducer(authReducer, initialState);
 
     // Registrar nuevos usuarios
-    const registrarUsuario = async datos => {
-        
+    const registrarUsuario = async (nombre, email, password) => {
+        const datos = {
+            nombre, email, password
+        }
         try {
             const respuesta = await clienteAxios.post('/api/usuarios', datos);
             dispatch({
@@ -54,8 +56,10 @@ const AuthState = ({children}) => {
     }
 
     // Autenticar Usuarios
-    const iniciarSesion = async datos => {
-
+    const iniciarSesion = async (email, password) => {
+        const datos = {
+            email, password
+        }
         try {
             const respuesta = await clienteAxios.post('/api/auth', datos);
             dispatch({
